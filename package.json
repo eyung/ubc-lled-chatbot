@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "generate-embeddings": "node scripts/generate-embeddings.js",
+    "prebuild": "mkdir -p data",
     "build": "npm run generate-embeddings",
+    "postbuild": "node -e \"const fs=require('fs'); if(!fs.existsSync('./data/website_chunks.json')){process.exit(1)}\"",
+    "vercel-build": "npm run build && npm run postbuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
