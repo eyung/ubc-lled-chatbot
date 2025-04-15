@@ -16,6 +16,13 @@
       "dest": "/api/$1"
     },
     {
+      "src": "/chatbot",
+      "dest": "/public/chatbot.html"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.js"
     }
