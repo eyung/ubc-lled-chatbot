@@ -1,0 +1,22 @@
+{
+  "name": "ubc-lled-chatbot",
+  "version": "1.0.0",
+  "description": "UBC LLED Chatbot using OpenAI APIs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "generate-embeddings": "node scripts/generate-embeddings.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "cosine-similarity": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "openai": "^4.93.0"
+  }
+}

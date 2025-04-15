@@ -1,0 +1,25 @@
+<!-- Example of how to embed the chatbot on your website -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Embed Example</title>
+</head>
+<body>
+    <!-- Your website content -->
+
+    <!-- Add this script tag where you want the chatbot to appear -->
+    <script src="https://your-vercel-url.vercel.app/chatbot.html"></script>
+
+    <!-- Optional: Track chatbot events with Google Analytics -->
+    <script>
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'chatbot_event') {
+                gtag('event', event.data.action, {
+                    'event_category': 'Chatbot',
+                    'event_label': event.data.label
+                });
+            }
+        });
+    </script>
+</body>
+</html>
