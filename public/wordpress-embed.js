@@ -35,6 +35,14 @@
             z-index: 999999;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
+
+        @media (max-width: 768px) {
+            #ubc-lled-chatbot-widget {
+                width: 90%;
+                right: 5%;
+                left: 5%;
+            }
+        }
     `;
     document.head.appendChild(style);
 
@@ -55,7 +63,7 @@
     iframe.style.height = '100%';
     iframe.style.border = 'none';
     iframe.style.borderRadius = '10px';
-    iframe.src = 'https://ubc-lled-chatbot.vercel.app/chatbot';
+    iframe.src = 'https://ubc-lled-chatbot.vercel.app/chatbot-iframe';
     container.appendChild(iframe);
 
     // Toggle functionality
@@ -63,22 +71,18 @@
     toggleBtn.addEventListener('click', () => {
         isOpen = !isOpen;
         container.style.display = isOpen ? 'flex' : 'none';
+        toggleBtn.style.display = isOpen ? 'none' : 'flex';
     });
 
-    // Handle responsive layout
-    function adjustForMobile() {
-        if (window.innerWidth < 768) {
-            container.style.width = '90%';
-            container.style.right = '5%';
-            container.style.left = '5%';
-            toggleBtn.style.right = '20px';
-        } else {
-            container.style.width = '350px';
-            container.style.right = '20px';
-            container.style.left = 'auto';
+    // Listen for messages from the iframe
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'chatbot_event') {
+            if (window.gtag) {
+                gtag('event', event.data.action, {
+                    'event_category': 'Chatbot',
+                    'event_label': event.data.label
+                });
+            }
         }
-    }
-
-    window.addEventListener('resize', adjustForMobile);
-    adjustForMobile();
+    });
 })();
