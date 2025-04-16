@@ -6,6 +6,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "data/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "index.js",
       "use": "@vercel/node"
     }
@@ -22,6 +26,10 @@
     {
       "src": "/wordpress-embed.js",
       "dest": "/public/wordpress-embed.js"
+    },
+    {
+      "src": "/data/(.*)",
+      "dest": "/data/$1"
     },
     {
       "src": "/(.*)",

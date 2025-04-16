@@ -19,8 +19,15 @@ const RATE_WINDOW = 60 * 1000; // 1 minute in milliseconds
 let websiteChunks = [];
 async function loadEmbeddings() {
     try {
-        const data = await fs.readFile(path.join(__dirname, '../data/website_chunks.json'), 'utf8');
+        // In production, use the absolute path to the embeddings file
+        const embeddingsPath = path.join(
+            process.env.VERCEL_ENV ? '/var/task' : process.cwd(),
+            'data/website_chunks.json'
+        );
+        console.log('Loading embeddings from:', embeddingsPath);
+        const data = await fs.readFile(embeddingsPath, 'utf8');
         websiteChunks = JSON.parse(data);
+        console.log(`Loaded ${websiteChunks.length} embeddings successfully`);
     } catch (error) {
         console.error('Error loading embeddings:', error);
         websiteChunks = [];

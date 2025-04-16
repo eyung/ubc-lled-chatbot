@@ -8,9 +8,8 @@
     "generate-embeddings": "node scripts/generate-embeddings.js",
     "test-scraper": "node scripts/test-scraper.js",
     "prebuild": "node scripts/setup-build.js",
-    "build": "npm run generate-embeddings",
-    "postbuild": "node -e \"const fs=require('fs'); if(!fs.existsSync('./data/website_chunks.json')){process.exit(1)}\"",
-    "vercel-build": "npm run build && npm run postbuild",
+    "build": "echo \"Using pre-generated embeddings from data/website_chunks.json\"",
+    "vercel-build": "npm run prebuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
