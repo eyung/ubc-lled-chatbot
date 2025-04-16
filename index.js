@@ -22,14 +22,18 @@ app.use(bodyParser.json());
 // Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Root route redirects to chatbot
+// Root route redirects to chatbot-iframe
 app.get('/', (req, res) => {
   res.redirect('/chatbot');
 });
 
-// Explicit route for chatbot
+// Explicit routes for chatbot
 app.get('/chatbot', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'chatbot.html'));
+  res.sendFile(path.join(__dirname, 'public', 'chatbot-iframe.html'));
+});
+
+app.get('/chatbot-iframe', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chatbot-iframe.html'));
 });
 
 // API routes
@@ -37,7 +41,7 @@ app.use("/api", chatRouter);
 
 // Handle 404s
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'public', 'chatbot.html'));
+  res.status(404).sendFile(path.join(__dirname, 'public', 'chatbot-iframe.html'));
 });
 
 // For local development

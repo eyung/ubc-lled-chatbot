@@ -1,4 +1,9 @@
 (function() {
+    // Prevent multiple instances
+    if (document.getElementById('ubc-lled-chatbot-widget')) {
+        return;
+    }
+
     // Create container for styles
     const style = document.createElement('style');
     style.textContent = `
@@ -15,6 +20,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             z-index: 999999;
             height: 500px;
+            overflow: hidden;
         }
         
         #ubc-lled-chatbot-toggle {
@@ -41,6 +47,7 @@
                 width: 90%;
                 right: 5%;
                 left: 5%;
+                bottom: 80px;
             }
         }
     `;
@@ -50,6 +57,7 @@
     const toggleBtn = document.createElement('button');
     toggleBtn.id = 'ubc-lled-chatbot-toggle';
     toggleBtn.innerHTML = '💬';
+    toggleBtn.setAttribute('aria-label', 'Toggle chat assistant');
     document.body.appendChild(toggleBtn);
 
     // Create chatbot container
@@ -64,6 +72,7 @@
     iframe.style.border = 'none';
     iframe.style.borderRadius = '10px';
     iframe.src = 'https://ubc-lled-chatbot.vercel.app/chatbot-iframe';
+    iframe.title = 'UBC LLED Chat Assistant';
     container.appendChild(iframe);
 
     // Toggle functionality

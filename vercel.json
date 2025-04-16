@@ -16,13 +16,12 @@
       "dest": "/index.js"
     },
     {
-      "src": "/chatbot/?",
-      "dest": "/public/chatbot.html"
+      "src": "/chatbot-?iframe?/?",
+      "dest": "/public/chatbot-iframe.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/public/$1",
-      "continue": true
+      "src": "/wordpress-embed.js",
+      "dest": "/public/wordpress-embed.js"
     },
     {
       "src": "/(.*)",
