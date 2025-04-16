@@ -36,9 +36,16 @@ function findRelevantContext(queryEmbedding, topK = 3) {
             similarity: cosineSimilarity(queryEmbedding, chunk.embedding)
         }))
         .sort((a, b) => b.similarity - a.similarity)
-        .slice(0, topK)
-        .map(chunk => chunk.text)
-        .join('\n');
+        .slice(0, topK);
+}
+
+// Format context with metadata
+function formatContext(contextChunks) {
+    return contextChunks.map(chunk => {
+        const sourceInfo = chunk.metadata ? 
+            `[Source: ${chunk.metadata.title || 'Untitled'} - ${chunk.metadata.url}]` : '';
+        return `${chunk.text}\n${sourceInfo}`;
+    }).join('\n\n');
 }
 
 // Rate limit middleware
@@ -86,7 +93,8 @@ router.post('/chat', checkRateLimit, async (req, res) => {
         });
         
         const queryEmbedding = embeddingResponse.data[0].embedding;
-        const relevantContext = findRelevantContext(queryEmbedding);
+        const relevantContextChunks = findRelevantContext(queryEmbedding);
+        const formattedContext = formatContext(relevantContextChunks);
 
         // Generate chat completion
         const completion = await openai.chat.completions.create({
@@ -95,7 +103,9 @@ router.post('/chat', checkRateLimit, async (req, res) => {
                 {
                     role: "system",
                     content: `You are a helpful assistant for the UBC LLED (Language and Literacy Education) department. 
-                    Use the following context to help answer the user's question: ${relevantContext}`
+                    Use the following context to help answer the user's question. Include relevant source links in your response when appropriate: 
+
+                    ${formattedContext}`
                 },
                 { role: "user", content: message }
             ],
@@ -105,6 +115,11 @@ router.post('/chat', checkRateLimit, async (req, res) => {
 
         res.json({ 
             response: completion.choices[0].message.content,
+            sources: relevantContextChunks.map(chunk => ({
+                title: chunk.metadata?.title || 'Untitled',
+                url: chunk.metadata?.url || '',
+                similarity: chunk.similarity
+            })),
             usage: completion.usage
         });
 

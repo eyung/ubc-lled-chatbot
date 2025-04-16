@@ -56,6 +56,20 @@
             align-self: flex-start;
         }
 
+        .bot-message .sources {
+            margin-top: 8px;
+            font-size: 0.8em;
+            opacity: 0.8;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 8px;
+        }
+
+        .bot-message .sources a {
+            color: white;
+            text-decoration: underline;
+            margin-right: 10px;
+        }
+
         #chat-input-container {
             padding: 15px;
             border-top: 1px solid #eee;
@@ -100,10 +114,24 @@
         const typingIndicator = document.getElementById('typing-indicator');
         const errorMessage = document.getElementById('error-message');
 
-        function addMessage(content, isUser) {
+        function addMessage(content, isUser, sources = []) {
             const message = document.createElement('div');
             message.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            // Add the main message text
             message.textContent = content;
+
+            // Add sources if available
+            if (!isUser && sources && sources.length > 0) {
+                const sourcesDiv = document.createElement('div');
+                sourcesDiv.className = 'sources';
+                sourcesDiv.innerHTML = 'Sources: ' + sources
+                    .filter(source => source.url)
+                    .map(source => `<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.title}</a>`)
+                    .join(' • ');
+                message.appendChild(sourcesDiv);
+            }
+
             messagesContainer.appendChild(message);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
@@ -126,7 +154,7 @@
                 }
 
                 const data = await response.json();
-                addMessage(data.response, false);
+                addMessage(data.response, false, data.sources);
             } catch (error) {
                 console.error('Chat error:', error);
                 errorMessage.textContent = 'Sorry, something went wrong. Please try again.';

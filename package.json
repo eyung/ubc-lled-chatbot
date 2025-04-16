@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "generate-embeddings": "node scripts/generate-embeddings.js",
+    "test-scraper": "node scripts/test-scraper.js",
     "prebuild": "node scripts/setup-build.js",
     "build": "npm run generate-embeddings",
     "postbuild": "node -e \"const fs=require('fs'); if(!fs.existsSync('./data/website_chunks.json')){process.exit(1)}\"",
@@ -16,11 +17,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
     "body-parser": "^2.2.0",
+    "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "cosine-similarity": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
-    "openai": "^4.93.0"
+    "html-to-text": "^9.0.5",
+    "openai": "^4.93.0",
+    "puppeteer": "^22.3.0",
+    "sitemap-generator": "^8.5.1",
+    "sitemapper": "^3.2.6"
   }
 }
